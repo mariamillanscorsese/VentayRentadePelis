@@ -1,54 +1,77 @@
-let cart = {};
+const carrito = [];
+const carritoElement = document.querySelector("#carrito");
+const listaCarrito = document.querySelector("#lista-carrito tbody");
+const imgCarrito = document.querySelector("#img-carrito");
+const vaciarCarritoBtn = document.querySelector("#vaciar-carrito");
 
-document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', () => {
-        const name = button.getAttribute('data-name');
-        const price = parseFloat(button.getAttribute('data-price'));
 
-        if (cart[name]) {
-            cart[name].quantity++;
-        } else {
-            cart[name] = { price: price, quantity: 1 };
-        }
-        updateCart();
+imgCarrito.addEventListener("click", () => {
+    carritoElement.classList.toggle("hidden");
+});
+
+
+vaciarCarritoBtn.addEventListener("click", () => {
+    vaciarCarrito();
+});
+
+document.querySelectorAll(".add-to-cart").forEach(button => {
+    button.addEventListener("click", (e) => {
+        const name = e.target.dataset.name;
+        const price = parseFloat(e.target.dataset.price.replace('.', ''));
+        agregarAlCarrito(name, price);
     });
 });
 
-function updateCart() {
-    const cartItems = document.getElementById('cart-items');
-    cartItems.innerHTML = '';
 
-    let total = 0;
+function agregarAlCarrito(name, price) {
+    const existeProducto = carrito.find(producto => producto.name === name);
+    if (existeProducto) {
+        existeProducto.cantidad += 1;
+    } else {
+        carrito.push({ name, price, cantidad: 1 });
+    }
+    actualizarCarrito();
+}
 
-    for (const [name, { price, quantity }] of Object.entries(cart)) {
+
+function actualizarCarrito() {
+   
+    listaCarrito.innerHTML = '';
+    
+    carrito.forEach(producto => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="py-2">${name}</td>
-            <td class="py-2">$${price.toFixed(2)}</td>
-            <td class="py-2">${quantity}</td>
-            <td class="py-2">$${(price * quantity).toFixed(2)}</td>
-            <td class="py-2">
-                <button class="remove-item bg-red-500 text-white p-1 rounded" data-name="${name}">X</button>
+            <td><img src="img/pelicula.jpg" alt="${producto.name}" width="50"></td>
+            <td>${producto.name}</td>
+            <td>$${producto.price.toLocaleString()}</td>
+            <td>${producto.cantidad}</td>
+            <td>
+                <button class="remove-item bg-red-500 text-white p-2 rounded" data-name="${producto.name}">X</button>
             </td>
         `;
-        cartItems.appendChild(row);
-        total += price * quantity;
-    }
-
-    const removeButtons = document.querySelectorAll('.remove-item');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
-            delete cart[name];
-            updateCart();
-        });
+        listaCarrito.appendChild(row);
     });
 
-    const emptyCartButton = document.getElementById('empty-cart');
-    emptyCartButton.addEventListener('click', () => {
-        cart = {};
-        updateCart();
+  
+    document.querySelectorAll(".remove-item").forEach(button => {
+        button.addEventListener("click", (e) => {
+            const name = e.target.dataset.name;
+            eliminarProducto(name);
+        });
     });
 }
 
-updateCart();
+
+function eliminarProducto(name) {
+    const index = carrito.findIndex(producto => producto.name === name);
+    if (index !== -1) {
+        carrito.splice(index, 1);
+        actualizarCarrito();
+    }
+}
+
+
+function vaciarCarrito() {
+    carrito.length = 0;
+    actualizarCarrito();
+}
