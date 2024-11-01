@@ -4,31 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <scrip scr="scripts.js"></script>
+    <script src="scripts.js"></script>
     <title>Tienda de Películas</title>
+    <style>
+        .bg-custom {
+            background-image: url('img/corazon.avif');
+            background-size: cover; 
+            background-position: center; 
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-custom">
+
     <div class="container mx-auto">
-        <h1 class="text-2xl font-bold my-5">Tienda de Películas</h1>
-        <h2 class="text-2xl font-bold my-5">Carrito de Compras</h2>
-        <div id="cart" class="bg-white rounded-lg shadow-lg p-6 mb-5">
-            <table class="min-w-full">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="py-2 text-left">Producto</th>
-                        <th class="py-2 text-left">Precio</th>
-                        <th class="py-2 text-left">Cantidad</th>
-                        <th class="py-2 text-left">Total</th>
-                        <th class="py-2 text-left">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="cart-items">
-                </tbody>
-            </table>
-            <div class="flex justify-between mt-4">
-                <button id="empty-cart" class="bg-red-500 text-white p-2 rounded-lg">Vaciar Carrito</button>
+        
+        <h1 class="text-6xl font-bold my-10 text-center">Tienda de Películas</h1>
+        <header class="bg-gray-800 text-black p-10">
+            <div class="container mx-auto flex justify-between items-center">
+           
+                <div class="relative">
+                    <div class="fixed top-5 right-5">
+                        <img src="img/cart.png" id="img-carrito" class="cursor-pointer w-12 h-12">
+                        <div id="carrito" class="hidden absolute right-0 bg-white shadow-lg rounded-lg mt-2 p-4 z-50">
+                            <table id="lista-carrito" class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Imagen</th>
+                                        <th class="text-left">Nombre</th>
+                                        <th class="text-left">Precio</th>
+                                        <th class="text-left">Cantidad</th>
+                                        <th class="text-left"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <a href="#" id="vaciar-carrito" class="block text-center bg-gray-800 text-white py-2 mt-4 rounded">Vaciar Carrito</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </header>
+    </div>
+
 
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
